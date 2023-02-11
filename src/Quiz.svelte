@@ -3,9 +3,9 @@
 	import { onMount, beforeUpdate, afterUpdate, onDestroy } from "svelte";
 	import Question from "./Question.svelte";
 	import Modal from "./Modal.svelte";
+	import { score } from "./store.js";
 
 	let activeQuestion = 0;
-	let score = 0;
 	let quiz = getQuiz();
 	let isModalOpen = false;
 
@@ -35,46 +35,50 @@
 
 	function resetQuiz() {
 		isModalOpen = false;
-		score = 0;
+		score.set(0);
 		activeQuestion = 0;
 		quiz = getQuiz();
 	}
 
-	function addToScore() {
-		score = score + 1;
-	}
 	// Reactive statement
-	$: if (score > 0) {
+	$: if (questionNumber > 10) {
 		isModalOpen = true;
 	}
+	// $: if ($score > 7) {
+	// 	isModalOpen = true;
+	// }
 
 	// Reactive declaration
 	$: questionNumber = activeQuestion + 1;
 </script>
 
 <div>
-	<button on:click|once={resetQuiz}>Start New Quiz</button>
+	<button on:click={resetQuiz}>Bail and Start New Quiz</button>
 
-	<h3>My Score: {score}</h3>
-	<h4>Question #{questionNumber}</h4>
+	<h3>My Score: {$score}</h3>
+	{#if questionNumber < 11}
+		<h4>Question #{questionNumber}</h4>
+	{/if}
 
-	{#await quiz}
-		loading...
-	{:then data}
-		{#each data.results as question, index}
-			{#if index === activeQuestion}
-				<div in:fly={{ x: 100 }} out:fly={{ x: -200 }} class="fade-wrapper">
-					<Question {addToScore} {nextQuestion} {question} />
-				</div>
-			{/if}
-		{/each}
-	{/await}
+	<div class="container">
+		{#await quiz}
+			loading...
+		{:then data}
+			{#each data.results as question, index}
+				{#if index === activeQuestion}
+					<div in:fly={{ x: 100 }} out:fly={{ x: -200 }} class="fade-wrapper">
+						<Question {nextQuestion} {question} />
+					</div>
+				{/if}
+			{/each}
+		{/await}
+	</div>
 </div>
 
 {#if isModalOpen}
 	<Modal on:close={resetQuiz}>
-		<h2>You won!</h2>
-		<p>Congratulations</p>
+		<h2>Score: {$score} / 10</h2>
+		<p>Congratulations!</p>
 		<!-- <button on:click={resetQuiz}>Start Over</button> -->
 	</Modal>
 {/if}
@@ -82,5 +86,8 @@
 <style>
 	.fade-wrapper {
 		position: absolute;
+	}
+	.container {
+		min-height: 400px;
 	}
 </style>

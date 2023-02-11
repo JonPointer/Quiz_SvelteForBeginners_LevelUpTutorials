@@ -1,9 +1,9 @@
 <script>
 	import App from "./App.svelte";
 
+	import { score } from "./store.js";
 	export let question;
 	export let nextQuestion;
-	export let addToScore;
 
 	let isCorrect;
 	let isAnswered = false;
@@ -33,7 +33,7 @@
 		isAnswered = true;
 		isCorrect = correct;
 		if (correct) {
-			addToScore();
+			score.update((val) => val + 1);
 		}
 	}
 </script>
@@ -51,13 +51,17 @@
 {/if}
 
 {#each allAnswers as answer}
-	<button disabled={isAnswered} on:click={() => checkQuestion(answer.correct)}>
+	<button
+		class="answer"
+		disabled={isAnswered}
+		on:click={() => checkQuestion(answer.correct)}
+	>
 		{@html answer.answer}</button
 	>
 {/each}
 {#if isAnswered}
 	<div>
-		<button on:click={nextQuestion}>Next Question</button>
+		<button on:click={nextQuestion}>Next</button>
 	</div>
 {/if}
 
@@ -70,5 +74,8 @@
 	}
 	h5.isCorrect {
 		color: green;
+	}
+	.answer {
+		display: block;
 	}
 </style>
