@@ -38,7 +38,7 @@
 	}
 </script>
 
-<h3>{@html question.question}</h3>
+<h3 class="question-text">{@html question.question}</h3>
 
 {#if isAnswered}
 	<h5 class:isCorrect class:wrong={!isCorrect}>
@@ -77,5 +77,8 @@
 	}
 	.answer {
 		display: block;
+	}
+	.question-text {
+		margin-right: 20px;
 	}
 </style>

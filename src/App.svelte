@@ -20,4 +20,7 @@
 		border-radius: 15px;
 		padding: 40px;
 	}
+	:global(button) {
+		border-radius: 5px;
+	}
 </style>

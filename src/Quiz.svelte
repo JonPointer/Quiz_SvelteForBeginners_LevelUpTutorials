@@ -53,7 +53,7 @@
 </script>
 
 <div>
-	<button on:click={resetQuiz}>Bail and Start New Quiz</button>
+	<button on:click={resetQuiz}>Bail & Start New Quiz</button>
 
 	<h3>My Score: {$score}</h3>
 	{#if questionNumber < 11}
@@ -88,6 +88,6 @@
 		position: absolute;
 	}
 	.container {
-		min-height: 400px;
+		min-height: 350px;
 	}
 </style>
