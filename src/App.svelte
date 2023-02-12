@@ -2,6 +2,10 @@
 	import Quiz from "./Quiz.svelte";
 </script>
 
+<svelte:head>
+	<title>Quiz</title>
+</svelte:head>
+
 <h1>Level Up Computer Quiz</h1>
 <div>
 	<Quiz />
